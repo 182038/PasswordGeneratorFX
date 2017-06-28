@@ -61,7 +61,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class FXMLDocumentController implements Initializable {
 
-    private final String desktop = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "passwords";
+    private static final String desktop = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "passwords";
 
     @FXML
     private PasswordField inputMasterpass;
@@ -228,20 +228,4 @@ public class FXMLDocumentController implements Initializable {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-//    private void protectFile(Path path) throws IOException {
-//        AclFileAttributeView aclAttr = Files.getFileAttributeView(path, AclFileAttributeView.class);
-//
-//        UserPrincipalLookupService upls = path.getFileSystem().getUserPrincipalLookupService();
-//        UserPrincipal user = upls.lookupPrincipalByName(System.getProperty("user.name"));
-//        AclEntry.Builder builder = AclEntry.newBuilder();
-//        builder.setPermissions(EnumSet.of(AclEntryPermission.APPEND_DATA, AclEntryPermission.DELETE, AclEntryPermission.DELETE_CHILD, AclEntryPermission.SYNCHRONIZE, AclEntryPermission.WRITE_ACL, AclEntryPermission.WRITE_ATTRIBUTES, AclEntryPermission.WRITE_DATA, AclEntryPermission.WRITE_NAMED_ATTRS, AclEntryPermission.WRITE_OWNER));
-//        builder.setPrincipal(user);
-//        builder.setType(AclEntryType.DENY);
-//        AclEntry.Builder builder2 = AclEntry.newBuilder();
-//        builder2.setPermissions(EnumSet.of(AclEntryPermission.READ_ACL, AclEntryPermission.READ_ATTRIBUTES, AclEntryPermission.READ_DATA, AclEntryPermission.READ_NAMED_ATTRS, AclEntryPermission.EXECUTE));
-//        builder2.setPrincipal(user);
-//        builder2.setType(AclEntryType.ALLOW);
-//        aclAttr.setAcl(Collections.singletonList(builder2.build()));
-//    }
 }
