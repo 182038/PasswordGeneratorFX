@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="316.0" prefWidth="458.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordgeneratorfx.FXMLDocumentController">
+   <children>
+      <VBox layoutX="14.0" layoutY="14.0" prefHeight="245.0" prefWidth="437.0">
+         <children>
+            <HBox prefHeight="57.0" prefWidth="437.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="50.0" prefWidth="384.0" text="Passwordgenerator" textAlignment="CENTER">
+                     <font>
+                        <Font name="Calibri" size="42.0" />
+                     </font>
+                  </Label>
+                  <Button id="btnHelp" mnemonicParsing="false" onAction="#handleButtonHelpAction" text="?" translateX="30.0" translateY="22.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="32.0" prefWidth="384.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="118.0" text="Masterpasswort:" />
+                  <PasswordField id="inputMasterpass" fx:id="inputMasterpass" prefHeight="25.0" prefWidth="320.0" promptText="Benötigt zum ver- und entschlüsseln" />
+               </children>
+            </HBox>
+            <HBox prefHeight="36.0" prefWidth="384.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="118.0" text="Passwort für:" />
+                  <TextField id="inputService" fx:id="inputService" prefHeight="25.0" prefWidth="320.0" promptText="z.B. Facebook, google+, twitter..." />
+               </children>
+            </HBox>
+            <HBox prefHeight="46.0" prefWidth="384.0">
+               <children>
+                  <Slider id="sliderLength" fx:id="sliderLength" blockIncrement="1.0" majorTickUnit="5.0" max="80.0" min="10.0" minorTickCount="4" prefHeight="38.0" prefWidth="431.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0" />
+                  <Label id="lblCount" fx:id="lblCount" alignment="CENTER" prefHeight="32.0" prefWidth="57.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="17.0" prefWidth="411.0">
+               <children>
+                  <CheckBox id="checkBoxSpecialChars" fx:id="checkBoxSpecialChars" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="185.0" text="Sonderzeichen verwenden" textAlignment="JUSTIFY" />
+               </children>
+            </HBox>
+            <TextArea id="outputPW" fx:id="outputPW" editable="false" prefHeight="54.0" prefWidth="437.0" promptText="Nur zur Ausgabe des Passworts gedacht" />
+            <VBox prefHeight="33.0" prefWidth="437.0">
+               <children>
+                  <HBox prefHeight="46.0" prefWidth="437.0">
+                     <children>
+                        <Button id="btnSave" fx:id="btnSave" mnemonicParsing="false" onAction="#handleButtonSaveAction" prefHeight="25.0" prefWidth="260.0" text="Speichern" />
+                        <Button id="btnGenerate" mnemonicParsing="false" onAction="#handleButtonGenerateAction" prefHeight="25.0" prefWidth="251.0" text="Generieren" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="27.0" prefWidth="384.0" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <Button id="btnRetrieve" layoutX="12.0" layoutY="276.0" mnemonicParsing="false" onAction="#handleButtonRetrieveAction" prefHeight="25.0" prefWidth="442.0" text="Abrufen" />
+   </children>
+</AnchorPane>
