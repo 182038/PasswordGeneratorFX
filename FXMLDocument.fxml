@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -22,7 +23,8 @@
             <HBox prefHeight="32.0" prefWidth="384.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="118.0" text="Masterpasswort:" />
-                  <PasswordField id="inputMasterpass" fx:id="inputMasterpass" prefHeight="25.0" prefWidth="320.0" promptText="Benötigt zum ver- und entschlüsseln" />
+                  <PasswordField id="inputMasterpass" fx:id="inputMasterpass" prefHeight="25.0" prefWidth="247.0" promptText="Benötigt zum ver- und entschlüsseln" />
+                  <Button id="btnShow" mnemonicParsing="false" onAction="#showPassword" prefHeight="25.0" prefWidth="74.0" text="Show" />
                </children>
             </HBox>
             <HBox prefHeight="36.0" prefWidth="384.0">

@@ -7,48 +7,35 @@ package passwordgeneratorfx;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.AclEntry;
-import java.nio.file.attribute.AclEntryPermission;
-import java.nio.file.attribute.AclEntryType;
-import java.nio.file.attribute.AclFileAttributeView;
-import java.nio.file.attribute.UserPrincipal;
-import java.nio.file.attribute.UserPrincipalLookupService;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.InputMismatchException;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.ToggleButton;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -62,10 +49,11 @@ import javax.crypto.spec.SecretKeySpec;
 public class FXMLDocumentController implements Initializable {
 
     private static final String desktop = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "passwords";
+    boolean isHidden = true;
 
     @FXML
     private PasswordField inputMasterpass;
-
+    
     @FXML
     private TextField inputService;
 
@@ -77,7 +65,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private Label lblCount;
-    
+
     @FXML
     private CheckBox checkBoxSpecialChars;
 
@@ -130,7 +118,7 @@ public class FXMLDocumentController implements Initializable {
         }
         try {
             String encPW = encrypt(password, masterpass);
-            System.out.println(encrypt(password, masterpass));
+            System.out.println(encPW);
             String path = desktop + File.separator + service + ".encpw";
             File file = new File(path);
             file.getParentFile().mkdirs();
@@ -227,5 +215,20 @@ public class FXMLDocumentController implements Initializable {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void showPassword() {
+//        if (isHidden) {
+//            inputMasterpass.setVisible(false);
+//            inputMasterpassUnmasked.setText(inputMasterpass.getText());
+//            inputMasterpassUnmasked.setVisible(true);
+//        } else {
+//            inputMasterpass.setText(inputMasterpassUnmasked.getText());
+//            inputMasterpass.setVisible(true);
+//            inputMasterpassUnmasked.setVisible(false);
+//        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Passwort: " + inputMasterpass.getText());
+        alert.show();
     }
 }
