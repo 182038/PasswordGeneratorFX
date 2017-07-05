@@ -216,19 +216,4 @@ public class FXMLDocumentController implements Initializable {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    @FXML
-    private void showPassword() {
-//        if (isHidden) {
-//            inputMasterpass.setVisible(false);
-//            inputMasterpassUnmasked.setText(inputMasterpass.getText());
-//            inputMasterpassUnmasked.setVisible(true);
-//        } else {
-//            inputMasterpass.setText(inputMasterpassUnmasked.getText());
-//            inputMasterpass.setVisible(true);
-//            inputMasterpassUnmasked.setVisible(false);
-//        }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Passwort: " + inputMasterpass.getText());
-        alert.show();
-    }
 }
