@@ -44,6 +44,8 @@ import javax.crypto.spec.SecretKeySpec;
  * @author 182038
  */
 public class FXMLDocumentController implements Initializable {
+    
+    boolean isDebug = java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().toLowerCase().contains("debug");
 
     // Where to save those .encpw files?
     // Don't worry. Your passwords will be SHA-256 encrypted using your masterpassword.
@@ -85,6 +87,10 @@ public class FXMLDocumentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if(isDebug) {
+            new Alert(Alert.AlertType.WARNING, "I don't like it, when someone debugs my code. Go away!").showAndWait();
+            Runtime.getRuntime().exit(0);
+        }
         int labelText = (int) sliderLength.getValue();
         lblCount.setText(String.valueOf(labelText));
 
