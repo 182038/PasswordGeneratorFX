@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers sc Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template sc the editor.
- */
 package passwordgeneratorfx;
 
 import java.io.File;
@@ -17,6 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -34,7 +30,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -44,16 +41,27 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
- * @author Dennis
+ * @author 182038
  */
 public class FXMLDocumentController implements Initializable {
 
-    private static final String desktop = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "passwords";
-    boolean isHidden = true;
+    // Where to save those .encpw files?
+    // Don't worry. Your passwords will be SHA-256 encrypted using your masterpassword.
+    // The resulting hash will be encrypted with BASE64 again before storing it in the database or filesystem.
+    static final String SAVEPATH = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "passwords";
+
+    // You should provide your database credentials here.
+    // The database connection is only used as a backup.
+    // The appplication does not retreive entries from the DB.
+    private static final String HOST = "localhost";
+    private static final String PORT = "3306";
+    private static final String DATABASE_NAME = "pwgen";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
 
     @FXML
     private PasswordField inputMasterpass;
-    
+
     @FXML
     private TextField inputService;
 
@@ -68,6 +76,12 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private CheckBox checkBoxSpecialChars;
+
+    @FXML
+    private CheckBox checkBoxDatabase;
+
+    @FXML
+    private Button buttonGenerate;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,6 +101,12 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleButtonGenerateAction(ActionEvent event) {
+        String masterpass = inputMasterpass.getText();
+        if (masterpass.length() < 5) {
+            new Alert(Alert.AlertType.WARNING, "Your masterpasswords length must be at least 5!").showAndWait();
+            inputMasterpass.requestFocus();
+            return;
+        }
         int length = (int) sliderLength.getValue();
         boolean special = checkBoxSpecialChars.isSelected();
         String password = PasswordGeneratorFX.generatePassword(length, special);
@@ -109,26 +129,41 @@ public class FXMLDocumentController implements Initializable {
         String password = outputPW.getText();
         String service = inputService.getText();
         if (masterpass.length() < 5) {
-            new Alert(Alert.AlertType.WARNING, "Das Masterpasswort muss mindestens 5 Zeichen lang sein!").showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Your masterpasswords length must be at least 5!").showAndWait();
+            inputMasterpass.requestFocus();
             return;
         } else if (password.length() < 1) {
-            new Alert(Alert.AlertType.WARNING, "Bitte erst ein Passwort generieren").showAndWait();
+            new Alert(Alert.AlertType.WARNING, "You forgot to generate a password.").showAndWait();
+            buttonGenerate.requestFocus();
             return;
         } else if (service.length() < 1) {
-            new Alert(Alert.AlertType.WARNING, "Bitte gib an für welchen Service das Passwort gilt, sonst kann es nicht abgespeichert werden.").showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Please enter a name for that password. Otherwise it can't be saved.").showAndWait();
+            inputService.requestFocus();
             return;
         }
         try {
             String encPW = encrypt(password, masterpass);
-            System.out.println(encPW);
-            String path = desktop + File.separator + service + ".encpw";
+            System.out.println("Hash: " + encPW);
+            String path = SAVEPATH + File.separator + service + ".encpw";
             File file = new File(path);
+            if (file.exists()) {
+                Optional<ButtonType> result = new Alert(Alert.AlertType.CONFIRMATION, "This service was already configured. Do you want to override the old password?").showAndWait();
+                if(result.isPresent() && result.get() != ButtonType.OK) return;
+            }
             file.getParentFile().mkdirs();
             file.createNewFile();
             fw = new FileWriter(file);
             fw.write(encPW);
-//            protectFile(file.toPath());
-        } catch (IOException ex) {
+
+            if (checkBoxDatabase.isSelected()) {
+                //Write to database
+                //Replace with your own variables
+                String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE_NAME + "";
+                DatabaseHelper db = new DatabaseHelper(url, USER, PASSWORD);
+                String[] values = {inputService.getText(), encPW};
+                db.writeToDB(values);
+            }
+        } catch (IOException | NullPointerException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
@@ -143,14 +178,15 @@ public class FXMLDocumentController implements Initializable {
     private void handleButtonRetrieveAction(ActionEvent event) {
         String masterpass = inputMasterpass.getText();
         if (masterpass.length() < 5) {
-            new Alert(Alert.AlertType.WARNING, "Das Masterpasswort muss mindestens 5 Zeichen lang sein!").showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Your masterpasswords length must be at least 5!").showAndWait();
+            inputMasterpass.requestFocus();
             return;
         }
         outputPW.clear();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Verschl. Passwörter (*.encpw)", "*.encpw");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("encrypted passwords (*.encpw)", "*.encpw");
         FileChooser fc = new FileChooser();
-        fc.setTitle("Datei zum entschlüsseln wählen...");
-        fc.setInitialDirectory(new File(desktop));
+        fc.setTitle("Choose a file for decryption...");
+        fc.setInitialDirectory(new File(SAVEPATH));
         fc.getExtensionFilters().add(extFilter);
         File file = fc.showOpenDialog(PasswordGeneratorFX.stage);
         if (file != null) {
@@ -164,12 +200,13 @@ public class FXMLDocumentController implements Initializable {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
             byte[] encrypted = cipher.doFinal(password.getBytes());
+            System.out.println(new String(encrypted));
             return new String(java.util.Base64.getMimeEncoder().encode(encrypted), StandardCharsets.UTF_8);
 
         } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        return "Fehler in der Funktion \"encrypt()\"";
     }
 
     private String decrypt(String encPW, String masterpass) {
@@ -186,7 +223,7 @@ public class FXMLDocumentController implements Initializable {
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BadPaddingException ex) {
-            new Alert(Alert.AlertType.ERROR, "Das Masterpasswort stimmt nicht mit dem bei der Erstellung verwendeten Masterpasswort überein!").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "The masterpassword does not match the masterpassword used when encrypting!").showAndWait();
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package passwordgeneratorfx;
 
+// I dont't think that this exception will ever be triggered. But I thought it would be funny to have it though...
 class TamperDetectionException extends Exception {
 
     public TamperDetectionException() {
@@ -8,6 +9,6 @@ class TamperDetectionException extends Exception {
     
     @Override
     public String getMessage() {
-        return "Das generierte Passwort hat nicht die gewünschte Länge. Scheinbar manipuliert hier jemand...";
+        return "The generated password does not match the set length. Seems like someone is tampering.";
     }
 }

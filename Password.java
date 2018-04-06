@@ -9,18 +9,18 @@ public class Password {
     private static boolean special;
     
     public Password(int length, boolean special) {
-        System.out.println("Password Intialisiert");
+        System.out.println("Class \"Password\" initialized");
         this.length = length;
         this.special = special;
         this.pass = generate();
     }
     
     static String generate() {
-        System.out.println("Password wird generiert");
+        System.out.println("started");
         String capsChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String chars= "abcdefghijlmnopqrstuvwxyz";
         String numChars = "0123456789";
-        String symbols = "!§$%&/()=?";
+        String symbols = "#+-!.:,-_";
         
         String passChars = (special) ? capsChars + chars + numChars + symbols : capsChars + chars + numChars;
         Random rand = new Random();
@@ -30,7 +30,7 @@ public class Password {
         for (int i = 0; i < length; i++) {
             password[i] = passChars.charAt(rand.nextInt(passChars.length()));
         }
-        System.out.println("Passwort wurde generiert");
+        System.out.println("finished");
         return String.copyValueOf(password);
     }
     

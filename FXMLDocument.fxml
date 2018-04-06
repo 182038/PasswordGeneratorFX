@@ -1,34 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="316.0" prefWidth="458.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordgeneratorfx.FXMLDocumentController">
+<AnchorPane id="AnchorPane" maxHeight="316.0" maxWidth="458.0" minHeight="316.0" minWidth="458.0" prefHeight="316.0" prefWidth="458.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordgeneratorfx.FXMLDocumentController">
    <children>
       <VBox layoutX="14.0" layoutY="14.0" prefHeight="245.0" prefWidth="437.0">
          <children>
-            <HBox prefHeight="57.0" prefWidth="437.0">
+            <HBox prefHeight="64.0" prefWidth="437.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="50.0" prefWidth="384.0" text="Passwordgenerator" textAlignment="CENTER">
+                  <Label alignment="CENTER" prefHeight="50.0" prefWidth="443.0" text="Passwordgenerator" textAlignment="CENTER">
                      <font>
                         <Font name="Calibri" size="42.0" />
                      </font>
                   </Label>
-                  <Button id="btnHelp" mnemonicParsing="false" onAction="#handleButtonHelpAction" text="?" translateX="30.0" translateY="22.0" />
+                  <VBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="89.0">
+                     <children>
+                        <Button id="btnHelp" alignment="CENTER" mnemonicParsing="false" onAction="#handleButtonHelpAction" text="Help" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <HBox prefHeight="32.0" prefWidth="384.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="118.0" text="Masterpasswort:" />
-                  <PasswordField id="inputMasterpass" fx:id="inputMasterpass" prefHeight="25.0" prefWidth="321.0" promptText="Benötigt zum ver- und entschlüsseln" />
+                  <Label prefHeight="17.0" prefWidth="118.0" text="Masterpassword:" />
+                  <PasswordField id="inputMasterpass" fx:id="inputMasterpass" prefHeight="25.0" prefWidth="321.0" promptText="Used for encryption and decryption" />
                </children>
             </HBox>
             <HBox prefHeight="36.0" prefWidth="384.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="118.0" text="Passwort für:" />
-                  <TextField id="inputService" fx:id="inputService" prefHeight="25.0" prefWidth="321.0" promptText="z.B. Facebook, google+, twitter..." />
+                  <Label prefHeight="17.0" prefWidth="118.0" text="Password for:" />
+                  <TextField id="inputService" fx:id="inputService" prefHeight="25.0" prefWidth="321.0" promptText="e.g. Twitter, google, facebook" />
                </children>
             </HBox>
             <HBox prefHeight="46.0" prefWidth="384.0">
@@ -43,16 +50,17 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="17.0" prefWidth="411.0">
                <children>
-                  <CheckBox id="checkBoxSpecialChars" fx:id="checkBoxSpecialChars" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="185.0" text="Sonderzeichen verwenden" textAlignment="JUSTIFY" />
+                  <CheckBox id="checkBoxSpecialChars" fx:id="checkBoxSpecialChars" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" prefWidth="170.0" text="Use special chars" />
+                  <CheckBox id="checkBoxDatabase" fx:id="checkBoxDatabase" mnemonicParsing="false" prefHeight="17.0" prefWidth="170.0" text="Use database" />
                </children>
             </HBox>
-            <TextArea id="outputPW" fx:id="outputPW" editable="false" prefHeight="54.0" prefWidth="437.0" promptText="Nur zur Ausgabe des Passworts gedacht" />
+            <TextArea id="outputPW" fx:id="outputPW" editable="false" prefHeight="54.0" prefWidth="437.0" promptText="Only used for password output" />
             <VBox prefHeight="33.0" prefWidth="437.0">
                <children>
                   <HBox prefHeight="46.0" prefWidth="437.0">
                      <children>
-                        <Button id="btnSave" fx:id="btnSave" mnemonicParsing="false" onAction="#handleButtonSaveAction" prefHeight="25.0" prefWidth="260.0" text="Speichern" />
-                        <Button id="btnGenerate" mnemonicParsing="false" onAction="#handleButtonGenerateAction" prefHeight="25.0" prefWidth="251.0" text="Generieren" />
+                        <Button id="btnSave" fx:id="btnSave" mnemonicParsing="false" onAction="#handleButtonSaveAction" prefHeight="25.0" prefWidth="260.0" text="Save" />
+                        <Button id="btnGenerate" fx:id="buttonGenerate" mnemonicParsing="false" onAction="#handleButtonGenerateAction" prefHeight="25.0" prefWidth="251.0" text="Generate" />
                      </children>
                   </HBox>
                   <HBox prefHeight="27.0" prefWidth="384.0" />
@@ -60,6 +68,6 @@
             </VBox>
          </children>
       </VBox>
-      <Button id="btnRetrieve" layoutX="12.0" layoutY="276.0" mnemonicParsing="false" onAction="#handleButtonRetrieveAction" prefHeight="25.0" prefWidth="442.0" text="Abrufen" />
+      <Button id="btnRetrieve" layoutX="12.0" layoutY="276.0" mnemonicParsing="false" onAction="#handleButtonRetrieveAction" prefHeight="25.0" prefWidth="442.0" text="Retrieve" />
    </children>
 </AnchorPane>
